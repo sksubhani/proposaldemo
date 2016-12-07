@@ -1,7 +1,9 @@
 package org.kpsc.docgen.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.kpsc.docgen.dto.Employee;
@@ -10,7 +12,9 @@ import org.kpsc.docgen.dto.ProposalData;
 import org.kpsc.docgen.dto.ProposalFooter;
 import org.kpsc.docgen.dto.ProposalHeader;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +28,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class ProposalController {
 
+	private static List<Employee> empList = new ArrayList<Employee>();
+
+	//Initialize the list with some data for index screen
+	static {
+		empList.add(new Employee(101, "Bill Gates", 1000.00, "D100"));
+		empList.add(new Employee(102, "Steve Jobs", 2000.00, "D100"));
+		empList.add(new Employee(103, "Larry Page", 3000.00, "D200"));
+		empList.add(new Employee(104, "Sergey Brin", 4000.00, "D200"));
+		empList.add(new Employee(105, "Larry Ellison", 4000.00, "D300"));
+	}
+	
+	
 	@GetMapping(path = "/")
 	public String welcome() {
 		System.out.println("Received request for welcome page.");
 		return "home";
+	}
+	
+	@GetMapping(path = "/assumptions")
+	public String showAssumptions(@ModelAttribute("model") ModelMap model) {
+
+		model.addAttribute("empList", empList);
+
+		return "assumptions";
 	}
 	
 	@PostMapping(path = "/processRequest", consumes = "application/json")

@@ -13,14 +13,28 @@
 	
 	<context:component-scan base-package="org.kpsc.docgen.*"></context:component-scan> 
 
+	<!--  View Technology for PDF view -->
 	<bean id="viewResolver1" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
   		<property name="order" value="1"/>
   		<property name="basename" value="views"/>
 	</bean>
-
-	<bean id="viewResolver2"
+	
+	<!--  View Technology for Freemarker templates -->
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	  <property name="templateLoaderPath" value="/WEB-INF/ftl/"/>
+	</bean>
+	<bean id="viewResolver2" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	  <property name="order" value="2"/>
+	  <property name="cache" value="true"/>
+	  <property name="prefix" value=""/>
+	  <property name="suffix" value=".ftl"/>
+	</bean>
+	
+	
+	<!--  Default view technology for JSPs using InternalResourceViewResolver -->
+	<bean id="viewResolver3"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-  		<property name="order" value="2"/>
+  		<property name="order" value="3"/>
 		<property name="prefix" value="/WEB-INF/views/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
